@@ -1,49 +1,37 @@
-Playfair, Hill, and Vigenère Ciphers
+1. Playfair Cipher Complexity
+The Playfair Cipher involves the following steps:
 
-This repository contains Python implementations of three classical encryption techniques:
+Key Matrix Generation: Constructing a 5×5 matrix from the key takes O(25) ≈ O(1) time.
+Text Preprocessing: Formatting the text (removing spaces, replacing 'J' with 'I', and pairing letters) takes O(n) time.
+Encryption/Decryption: Each pair of letters is encrypted by searching in the 5×5 matrix:
+Searching for a letter in the matrix takes O(1) (since it's a small fixed-size structure).
+Each letter pair undergoes a transformation in O(1) time.
+Total encryption time is O(n).
+Overall Complexity: O(n)
 
-Playfair Cipher
+2. Hill Cipher Complexity
+The Hill Cipher relies on matrix operations:
 
-Hill Cipher
+Key Matrix Validation: Checking if the matrix is invertible takes O(m³) (using determinant and inverse calculations).
+Text-to-Vector Conversion: Converting the text into numeric vectors takes O(n).
+Matrix Multiplication: Encrypting a block of m characters using an m×m matrix takes O(m²) time per block.
+Decryption: Requires computing the inverse of the key matrix, which is O(m³).
+For a text of length n split into blocks of size m:
 
-Vigenère Cipher
+Encryption takes O((n/m) * m²) = O(nm)
+Decryption takes O(m³) + O(nm) ≈ O(m³ + nm)
+If m is small (e.g., 2 or 3), Hill Cipher is close to O(n), but matrix inversion adds O(m³) overhead.
 
-These ciphers are used for encrypting and decrypting text-based messages. Below is an overview of each cipher and how to use the provided implementation.
+3. Vigenère Cipher Complexity
+Key Expansion: Repeating or extending the key to match the plaintext length takes O(n).
+Encryption/Decryption: Each character is shifted by the corresponding key character in O(1) time.
+Overall Complexity: O(n).
+Final Comparison
+Cipher	Encryption Complexity	Decryption Complexity
+Playfair	O(n)	O(n)
+Hill	O(nm)	O(m³ + nm)
+Vigenère	O(n)	O(n)
+Conclusion:
 
-Ciphers Overview
-
-1. Playfair Cipher
-
-The Playfair Cipher is a digraph substitution cipher that encrypts text by pairing letters and replacing them using a 5x5 key matrix.
-
-Key Features:
-
-Uses a 5x5 matrix of letters
-
-Replaces letter pairs using predefined rules
-
-Eliminates the letter 'J' and replaces it with 'I'
-
-2. Hill Cipher
-
-The Hill Cipher is a polygraphic substitution cipher that uses matrix multiplication to encrypt plaintext.
-
-Key Features:
-
-Uses linear algebra for encryption
-
-Requires an invertible key matrix
-
-Works on blocks of text instead of single letters
-
-3. Vigenère Cipher
-
-The Vigenère Cipher is a polyalphabetic substitution cipher that uses a repeating key to shift letters.
-
-Key Features:
-
-Uses a repeating key for shifting letters
-
-Resistant to frequency analysis
-
-Simple encryption and decryption process
+Vigenère and Playfair are efficient (O(n)) since they perform simple character shifts/substitutions.
+Hill Cipher is more computationally expensive (O(m³ + nm)) due to matrix operations, especially for large key sizes.
